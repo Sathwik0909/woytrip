@@ -16,6 +16,6 @@ router.post('/register', registerAdmin);
 router.post('/login', loginAdmin);
 
 // Admin logout route
-router.post('/logout',protect, logoutAdmin);
+// router.post('/logout',protect, logoutAdmin);
 
 export default router;

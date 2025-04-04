@@ -39,7 +39,6 @@ import React, { useEffect, useState } from "react";
 import { DestinationCardsSection } from "./sections/DestinationCardsSection/DestinationCardsSection";
 // import { HeaderSection } from "./sections/HeaderSection";
 import { HeroSection } from "./sections/HeroSection/HeroSection";
-import { ImageOverlaySection } from "./sections/ImageOverlaySection";
 
 import { NewsletterSection } from "./sections/NewsletterSection";
 

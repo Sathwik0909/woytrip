@@ -6,8 +6,9 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
+// Generate JWT token
 const generateToken = (id) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: '1d' });
+  return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: "1d" });
 };
 
 // Register Admin
@@ -15,26 +16,20 @@ export const registerAdmin = catchAsync(async (req, res, next) => {
   const { username, password } = req.body;
 
   const adminExists = await Admin.findOne({ username });
-  if (adminExists) return next(new AppError('Admin already exists', 400));
+  if (adminExists) return next(new AppError("Admin already exists", 400));
 
   const adminCount = await Admin.countDocuments();
-  if (adminCount > 0) return next(new AppError('Only one admin account allowed', 400));
+  if (adminCount > 0) return next(new AppError("Only one admin account allowed", 400));
 
   const admin = await Admin.create({ username, password });
   const token = generateToken(admin._id);
-  
-  // Store token in database
-  admin.tokens.push({ token });
-  await admin.save();
 
   res.status(201).json({
     _id: admin._id,
     username: admin.username,
-    token
+    token,
   });
 });
-
-
 
 // Login Admin
 export const loginAdmin = catchAsync(async (req, res, next) => {
@@ -42,21 +37,18 @@ export const loginAdmin = catchAsync(async (req, res, next) => {
 
   const admin = await Admin.findOne({ username });
   if (!admin || !(await admin.matchPassword(password))) {
-    return next(new AppError('Invalid credentials', 401));
+    return next(new AppError("Invalid credentials", 401));
   }
 
   const token = generateToken(admin._id);
-  
-  // Store token in database
-  admin.tokens.push({ token });
-  await admin.save();
 
   res.json({
     _id: admin._id,
     username: admin.username,
-    token
+    token,
   });
 });
+
 
 
 

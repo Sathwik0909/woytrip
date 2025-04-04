@@ -13,31 +13,41 @@ import {
   GiVideoCamera,
 } from "react-icons/gi";
 import { FaHotel, FaBus } from "react-icons/fa";
-
+import { useAuth } from "../../../../context/AuthContext";
 
 const AdminDashboard = () => {
+  const { isAuthenticated } = useAuth();
+  const navigate = useNavigate();
   const [cards, setCards] = useState<CardType[]>([]);
   const [selectedCard, setSelectedCard] = useState<CardType | null>(null);
   const [showForm, setShowForm] = useState(false);
-  const navigate = useNavigate();
+  const { logout } = useAuth();
 
-  // Fetch all cards
+  useEffect(() => {
+    if (!isAuthenticated) {
+      navigate("/admin/login");
+    }
+  }, [isAuthenticated, navigate]);
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      fetchCards();
+    }
+  }, [isAuthenticated]);
+
   const fetchCards = async () => {
     try {
       const response = await api.get("/cards");
-      setCards(response.data.map((card: CardType) => ({
-        ...card,
-        features: card.features || {} // Add default empty features object
-      })));
+      setCards(
+        response.data.map((card: CardType) => ({
+          ...card,
+          features: card.features || {},
+        }))
+      );
     } catch (error) {
-      console.error("Error fetching cards:", error);
-    }
-  
+      console.error("Error fetching cards:", error);
+    }
   };
-
-  useEffect(() => {
-    fetchCards();
-  }, []);
 
   const handleDelete = async (id: string) => {
     try {
@@ -49,7 +59,7 @@ const AdminDashboard = () => {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem("adminToken");
+    logout();
     navigate("/admin/login");
   };
 
@@ -58,18 +68,16 @@ const AdminDashboard = () => {
     setSelectedCard(null);
   };
 
+  if (!isAuthenticated) return null;
+
   return (
     <div className="min-h-screen bg-gray-50">
       <ToastContainer position="top-center" autoClose={3000} />
-
-      {/* Header */}
       <header className="bg-gradient-to-r from-blue-600 to-indigo-700 shadow-lg">
         <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
           <h1 className="text-2xl font-bold text-white flex items-center gap-2">
             <span>🏔️ WoyTrip Admin</span>
-           
           </h1>
-
           <div className="flex items-center gap-4">
             <button
               onClick={() => {
@@ -91,8 +99,6 @@ const AdminDashboard = () => {
           </div>
         </div>
       </header>
-
-      {/* Main Content */}
       <main className="max-w-7xl mx-auto px-6 py-8">
         {(showForm || selectedCard) && (
           <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
@@ -105,31 +111,26 @@ const AdminDashboard = () => {
             />
           </div>
         )}
-
-        {/* Destinations Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 ">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {cards.map((card) => (
             <div
-            key={card._id}
-            className="group bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 relative" // Added 'relative' here
-          >
-            {/* Popular Badge - Top right of card */}
-            {card.popular && (
-              <div className="absolute top-4 right-4 bg-yellow-400 text-white px-3 py-1 rounded-full text-sm font-medium flex items-center gap-1 z-10">
-                <FiStar className="text-white" />
-                Popular
+              key={card._id}
+              className="group bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 relative"
+            >
+              {card.popular && (
+                <div className="absolute top-4 right-4 bg-yellow-400 text-white px-3 py-1 rounded-full text-sm font-medium flex items-center gap-1 z-10">
+                  <FiStar className="text-white" />
+                  Popular
+                </div>
+              )}
+              <div className="relative aspect-video overflow-hidden rounded-t-2xl">
+                <img
+                  src={card.imageUrl}
+                  alt={card.title}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/40" />
               </div>
-            )}
-          
-            <div className="relative aspect-video overflow-hidden rounded-t-2xl">
-              <img
-                src={card.imageUrl}
-                alt={card.title}
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/40" />
-            </div>
-
               <div className="p-5">
                 <div className="flex justify-between items-start mb-4">
                   <div>
@@ -161,8 +162,6 @@ const AdminDashboard = () => {
                     </button>
                   </div>
                 </div>
-
-                {/* Features Grid */}
                 <div className="border-t pt-4">
                   <h4 className="text-sm font-semibold text-gray-600 mb-2">
                     Features:
@@ -170,36 +169,34 @@ const AdminDashboard = () => {
                   <div className="grid grid-cols-3 gap-2">
                     {card.features?.video && (
                       <div className="flex items-center gap-2 text-sm text-gray-600">
-                        <GiVideoCamera className="text-blue-500" />
-                        Video
+                        <GiVideoCamera className="text-blue-500" /> Video
                       </div>
                     )}
                     {card.features?.meals && (
                       <div className="flex items-center gap-2 text-sm text-gray-600">
-                        <GiMeal className="text-green-500" />
-                        Meals
+                        <GiMeal className="text-green-500" /> Meals
                       </div>
                     )}
                     {card.features?.stay && (
                       <div className="flex items-center gap-2 text-sm text-gray-600">
-                        <FaHotel className="text-purple-500" />
-                        Stay
+                        <FaHotel className="text-purple-500" /> Stay
                       </div>
                     )}
+                    
                     {card.features?.sightseeing && (
-                      <div className="flex items-center gap-2 text-sm text-gray-600">
+                      <div className="flex items-center gap-2">
                         <GiSightDisabled className="text-orange-500" />
                         Tours
                       </div>
                     )}
                     {card.features?.medical && (
-                      <div className="flex items-center gap-2 text-sm text-gray-600">
+                      <div className="flex items-center gap-2">
                         <GiMedicalPackAlt className="text-red-500" />
                         Medical
                       </div>
                     )}
                     {card.features?.transport && (
-                      <div className="flex items-center gap-2 text-sm text-gray-600">
+                      <div className="flex items-center gap-2">
                         <FaBus className="text-teal-500" />
                         Transport
                       </div>

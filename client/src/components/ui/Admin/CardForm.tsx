@@ -97,7 +97,8 @@ const CardForm = ({ selectedCard, setSelectedCard, setCards, onClose,fetchCards 
       data.append(`features[${key}]`, value.toString()); 
     });
   
-    data.append("popular", formData.popular.toString());
+    data.append("popular", formData.popular ? "true" : "false");
+
   
     if (formData.image) {
       data.append("image", formData.image);
@@ -107,6 +108,7 @@ const CardForm = ({ selectedCard, setSelectedCard, setCards, onClose,fetchCards 
       let updatedCard: CardType;
       if (selectedCard) {
         const response = await api.put<CardType>(`/cards/${selectedCard._id}`, data);
+        
         updatedCard = response.data;
         setCards(prev => prev.map(card => 
           card._id === selectedCard._id ? { ...card, ...updatedCard } : card

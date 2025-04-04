@@ -1,1 +1,0 @@
-export { ImageOverlaySection } from "./ImageOverlaySection";

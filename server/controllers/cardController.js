@@ -68,13 +68,13 @@ export const getCards = catchAsync(async (req, res, next) => {
 // @route   PUT /api/cards/:id
 // @access  Private
 export const updateCard = catchAsync(async (req, res, next) => {
+  console.log(req.body);
   const card = await Card.findById(req.params.id);
   if (!card) return next(new AppError("Card not found", 404));
 
   // Handle image upload if file exists
   if (req.file) {
     try {
-      // Upload new image to Cloudinary using buffer
       const result = await new Promise((resolve, reject) => {
         const uploadStream = cloudinary.v2.uploader.upload_stream(
           {
@@ -89,15 +89,13 @@ export const updateCard = catchAsync(async (req, res, next) => {
         uploadStream.end(req.file.buffer);
       });
 
-      // Delete old image if it exists
+      // Delete old image if exists
       if (card.imagePublicId) {
         await cloudinary.v2.uploader.destroy(card.imagePublicId);
       }
 
-      // Update image references
       card.imageUrl = result.secure_url;
       card.imagePublicId = result.public_id;
-
     } catch (error) {
       console.error("Cloudinary Error:", error);
       return next(new AppError("Image update failed", 500));
@@ -107,25 +105,31 @@ export const updateCard = catchAsync(async (req, res, next) => {
   // Update other fields
   card.title = req.body.title || card.title;
   card.location = req.body.location || card.location;
-  
+
+  // Ensure features are correctly parsed
   if (req.body.features) {
     try {
-      card.features = JSON.parse(req.body.features);
+      card.features =
+        typeof req.body.features === "string"
+          ? JSON.parse(req.body.features)
+          : req.body.features;
     } catch (e) {
       return next(new AppError("Invalid features format", 400));
     }
   }
 
+  // Ensure popular is a boolean
   if (req.body.popular !== undefined) {
-    card.popular = req.body.popular === 'true';
+    card.popular = req.body.popular === "true";
   }
 
   const updatedCard = await card.save();
   res.status(200).json({
     status: "success",
-    data: updatedCard
+    data: updatedCard,
   });
 });
+
 
 // @desc    Delete a card
 // @route   DELETE /api/cards/:id

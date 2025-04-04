@@ -18,7 +18,6 @@ export const uploadImage = catchAsync(async (req, res, next) => {
     return next(new AppError('No file uploaded', 400));
   }
 
-  console.log('File received:', req.file);
 
   // Upload image buffer to Cloudinary
   const uploadStream = cloudinary.v2.uploader.upload_stream(

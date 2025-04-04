@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../../../context/AuthContext"; // Import AuthContext
 import api from "../../../../api";
 import { toast } from "react-toastify";
-
 import { LockClosedIcon, UserCircleIcon } from "@heroicons/react/24/outline";
 
 const AdminLogin = () => {
+  const { isAuthenticated, login } = useAuth();
   const [credentials, setCredentials] = useState({
     username: "",
     password: "",
@@ -13,31 +14,36 @@ const AdminLogin = () => {
   const [isLoggingIn, setIsLoggingIn] = useState(false);
   const navigate = useNavigate();
 
-  // Check for existing token on component mount
+  // Redirect if already logged in
   useEffect(() => {
-    const token = localStorage.getItem("adminToken");
-    if (token) {
+    if (isAuthenticated) {
       navigate("/admin/dashboard");
     }
-  }, [navigate]);
+  }, [isAuthenticated, navigate]);
+
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoggingIn(true);
+    setErrorMessage(""); // Clear previous error
 
     try {
       const { data } = await api.post("/admin/login", credentials);
-      
-      // Store token before navigation
-      localStorage.setItem("adminToken", data.token);
-      
-      // Show toast and redirect
+      login(data.token);
       toast.success("Login successful!");
       navigate("/admin/dashboard");
-      
-    } catch (error) {
+    } catch (error: any) {
       console.error("Login error:", error);
-      toast.error("Invalid username or password");
+      if (
+        error.response &&
+        error.response.data &&
+        error.response.data.message
+      ) {
+        setErrorMessage(error.response.data.message);
+      } else {
+        setErrorMessage("Invalid username or password");
+      }
     } finally {
       setIsLoggingIn(false);
     }
@@ -110,8 +116,9 @@ const AdminLogin = () => {
             )}
           </button>
         </form>
-
-       
+        {errorMessage && (
+          <p className="text-red-600 text-center font-medium">{errorMessage}</p>
+        )}
       </div>
     </div>
   );
