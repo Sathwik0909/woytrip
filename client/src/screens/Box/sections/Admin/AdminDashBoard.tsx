@@ -35,19 +35,24 @@ const AdminDashboard = () => {
     }
   }, [isAuthenticated]);
 
-  const fetchCards = async () => {
-    try {
-      const response = await api.get("/cards");
-      setCards(
-        response.data.map((card: CardType) => ({
-          ...card,
-          features: card.features || {},
-        }))
-      );
-    } catch (error) {
-      console.error("Error fetching cards:", error);
-    }
-  };
+// Update the fetchCards function to force fresh data
+const fetchCards = async () => {
+  try {
+    const response = await api.get<CardType[]>("/cards", {
+      params: { timestamp: Date.now() } // Cache buster
+    });
+    
+    // Create new array references for React state
+    setCards(response.data.map(card => ({
+      ...card,
+      features: card.features || {},
+      // Ensure images array is new reference
+      images: [...card.images] 
+    })));
+  } catch (error) {
+    console.error("Error fetching cards:", error);
+  }
+};
 
   const handleDelete = async (id: string) => {
     try {
@@ -66,6 +71,7 @@ const AdminDashboard = () => {
   const handleFormClose = () => {
     setShowForm(false);
     setSelectedCard(null);
+    fetchCards();
   };
 
   if (!isAuthenticated) return null;
@@ -123,12 +129,18 @@ const AdminDashboard = () => {
                   Popular
                 </div>
               )}
+              
               <div className="relative aspect-video overflow-hidden rounded-t-2xl">
-                <img
-                  src={card.imageUrl}
-                  alt={card.title}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                />
+                <div className="flex h-full">
+                  {card.images.map((image, idx) => (
+                    <img
+                      key={idx}
+                      src={image.url}
+                      alt={card.title}
+                      className="w-full h-full object-cover flex-shrink-0"
+                    />
+                  ))}
+                </div>
                 <div className="absolute inset-0 bg-gradient-to-t from-black/40" />
               </div>
               <div className="p-5">
@@ -182,7 +194,7 @@ const AdminDashboard = () => {
                         <FaHotel className="text-purple-500" /> Stay
                       </div>
                     )}
-                    
+
                     {card.features?.sightseeing && (
                       <div className="flex items-center gap-2">
                         <GiSightDisabled className="text-orange-500" />
