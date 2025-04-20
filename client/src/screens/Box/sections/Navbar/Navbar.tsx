@@ -13,6 +13,7 @@ export const Navbar = (): JSX.Element => {
     { label: "Home", href: "/" },
     { label: "Contact Us", href: "/#contact" },
     { label: "About Us", href: "/about" },
+    // {label: "Make Trip", href: "/#destinations"},
   ];
 
   return (
@@ -40,9 +41,12 @@ export const Navbar = (): JSX.Element => {
 
         {/* CTA Button for Desktop */}
         <a href="/#destinations">
-          <Button className="bg-gradient-to-r from-[#42a7c3] to-[#38d4ff] text-white font-bold px-4 py-1 rounded-lg hover:opacity-80 transition-all">
-            Make Trip
-          </Button>
+
+          <Button className="hidden sm:inline-flex  bg-gradient-to-r from-[#42a7c3] to-[#38d4ff] text-white font-bold px-4 py-1 rounded-lg hover:opacity-80 transition-all">
+  Make Trip
+</Button>
+
+
         </a>
 
         {/* Mobile Menu Toggle Button */}
@@ -51,7 +55,7 @@ export const Navbar = (): JSX.Element => {
           onClick={() => setIsOpen(!isOpen)}
           aria-label="Toggle navigation menu"
         >
-          {isOpen ? <X size={28} /> : <Menu size={28} />}
+          {isOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
       </div>
 
@@ -59,30 +63,42 @@ export const Navbar = (): JSX.Element => {
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            className="md:hidden bg-transparent shadow-lg absolute top-[70px] left-0 w-full flex flex-col items-end pr-6 py-5 space-y-4 z-50"
+                      initial={{ opacity: 0, x: 100 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0, x: 100 }}
+                      transition={{ duration: 0.3 }}
+                      className="md:hidden absolute right-4 top-[70px] bg-white/90 bg-transparent rounded-lg shadow-lg p-4 w-[75%] max-w-40 flex flex-col items-end space-y-3"
           >
             {navItems.map((item, index) => (
               <a
                 key={index}
                 href={item.href}
-                className="bg-gradient-to-r from-[#42a7c3] to-[#38d4ff] text-white font-bold px-4 py-1 rounded-lg hover:opacity-80 transition-all"
+                className="text-sm w-28  text-center bg-gradient-to-r from-[#42a7c3] to-[#38d4ff] text-white font-semibold px-3 py-1.5 rounded-md hover:opacity-80 transition-all"
               >
                 {item.label}
               </a>
             ))}
-
             {/* CTA Button in Mobile Menu */}
             <a href="/#destinations">
-              <Button className="bg-gradient-to-r from-[#42a7c3] to-[#38d4ff] text-white font-bold px-4 py-1 rounded-lg hover:opacity-80 transition-all">
+              <Button className="text-sm text-center w-28 bg-gradient-to-r from-[#42a7c3] to-[#38d4ff] text-white font-semibold px-3 py-1.5 rounded-md hover:opacity-80 transition-all">
                 Make Trip
               </Button>
             </a>
+
           </motion.div>
         )}
       </AnimatePresence>
     </header>
   );
 };
+
+
+
+
+
+
+
+
+
+
+

@@ -7,13 +7,13 @@ import msme from "../../../../assets/images/msme logo.svg";
 
 export const Footer = (): JSX.Element => {
   const companyLinks = [
-    { title: "About", href: "#" },
+    { title: "About", href: "/about" },
     { title: "Careers", href: "#" },
-    { title: "Mobile", href: "#" },
+    { title: "Mobile", href: "https://wa.me/918885523545" },
   ];
 
   const contactLinks = [
-    { title: "Help/FAQ", href: "#" },
+    { title: "Help/FAQ", href: "/#faq" },
     { title: "Press", href: "#" },
     { title: "Affilates", href: "#" },
   ];
@@ -26,16 +26,19 @@ export const Footer = (): JSX.Element => {
 
   const socialMedia = [
     {
-      icon: <InstagramIcon size={28} />,
-      href: "https://www.instagram.com/woytrip/profilecard/?igsh=ZjhkbnlvOHZvYWlu", // replace with actual link
+      icon: <InstagramIcon size={22} />,
+      href: "https://www.instagram.com/woytrip/profilecard/?igsh=ZjhkbnlvOHZvYWlu",
+      label: "Instagram"
     },
     {
-      icon: <MailIcon size={28} />,
-      href: "mailto:youremail@example.com", // replace with actual email
+      icon: <MailIcon size={22} />,
+      href: "mailto:woytrip.website@gmail.com",
+      label: "Email"
     },
     {
-      icon: <PhoneCallIcon size={28} />,
-      href: "https://wa.me/918885523545", // replace with actual WhatsApp number with country code
+      icon: <PhoneCallIcon size={22} />,
+      href: "https://wa.me/918885523545",
+      label: "WhatsApp"
     },
   ];
 
@@ -117,12 +120,15 @@ export const Footer = (): JSX.Element => {
           <div className="flex gap-12 ">
             {socialMedia.map((social, index) => (
               <a
-                key={index}
-                href={social.href}
-                className="w-16 h-16 flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200 hover:scale-125 transition-colors"
-              >
-                {social.icon}
-              </a>
+              key={index}
+              href={social.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={social.label}
+              className="w-10 h-10 flex items-center justify-center rounded-full bg-gray-200 hover:bg-gray-300 transition-transform hover:scale-110"
+            >
+              {social.icon}
+            </a>
             ))}
           </div>
         </div>

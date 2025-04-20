@@ -108,7 +108,7 @@ const FAQItem = ({
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="border border-gray-300 bg-white rounded-lg shadow-md overflow-hidden">
+    <div className="border border-gray-300 bg-white rounded-lg shadow-md overflow-hidden" id="faq">
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="w-full flex justify-between items-center px-10 py-2 text-left text-lg font-medium text-gray-900 hover:bg-gray-100 transition"
