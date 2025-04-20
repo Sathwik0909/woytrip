@@ -4,8 +4,10 @@ import axios, {
   AxiosError,
 } from "axios";
 
+
+
 const api: AxiosInstance = axios.create({
-  baseURL: "http://localhost:5000/api/v1",
+  baseURL: import.meta.env.VITE_API_URL,
 });
 
 interface ErrorResponse {
