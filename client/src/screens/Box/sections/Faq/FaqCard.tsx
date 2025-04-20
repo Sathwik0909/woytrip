@@ -28,7 +28,7 @@ const FaqCard = () => {
     {
       question: "What is the short video feature included in the trip?",
       answer:
-        "We create a complimentary short video capturing the highlights of your trip, allowing you to relive and share your travel memories with friends and family.",
+        "We offer a complimentary short video that beautifully captures the highlights of your trip! To create this personalized memory, we kindly request your favorite photos and videos from the journey—with your consent. Share your moments with us, and we’ll craft a special keepsake you can relive and easily share with friends and family."
     },
     {
       question:

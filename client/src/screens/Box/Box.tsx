@@ -20,6 +20,8 @@ import api from "../../api";
 
 import FaqCard from "./sections/Faq/FaqCard";
 
+import { FaWhatsapp } from "react-icons/fa";
+
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
@@ -69,6 +71,17 @@ export const Box = (): JSX.Element => {
         <FaqCard />
 
         <Footer />
+
+        <a
+          href="https://wa.me/918885523545" // Replace '918885523545' with your WhatsApp number
+          target="_blank"
+          rel="noopener noreferrer"
+          className="fixed bottom-10 right-10 w-16 h-16 bg-green-500 text-white flex items-center justify-center p-4 rounded-full shadow-lg hover:bg-green-600 transition-all"
+        >
+          <FaWhatsapp size={48} />
+        </a>
+
+
       </div>
     </div>
   );
