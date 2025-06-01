@@ -107,7 +107,7 @@ export const AboutUs = (): JSX.Element => {
             </div>
 
             {/* Stats Section */}
-            <div className="w-full flex flex-col md:flex-row rounded-[0px_0px_20px_100px] overflow-hidden">
+{/*             <div className="w-full flex flex-col md:flex-row rounded-[0px_0px_20px_100px] overflow-hidden">
               {stats.map((stat, index) => (
                 <React.Fragment key={index}>
                   <div
@@ -132,7 +132,7 @@ export const AboutUs = (): JSX.Element => {
                   )}
                 </React.Fragment>
               ))}
-            </div>
+            </div> */}
           </div>
         </CardContent>
       </Card>
