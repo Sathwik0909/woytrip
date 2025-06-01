@@ -73,14 +73,14 @@ export const Navbar = (): JSX.Element => {
               <a
                 key={index}
                 href={item.href}
-                className="text-sm w-28  text-center bg-gradient-to-r from-[#42a7c3] to-[#38d4ff] text-white font-semibold px-3 py-1.5 rounded-md hover:opacity-80 transition-all"
+                className="text-sm w-28  text-center bg-gradient-to-r from-[#42a7c3] to-[#38d4ff] text-white font-semibold px-3 py-1.5 z-[999] rounded-md hover:opacity-80 transition-all"
               >
                 {item.label}
               </a>
             ))}
             {/* CTA Button in Mobile Menu */}
             <a href="/#destinations">
-              <Button className="text-sm text-center w-28 bg-gradient-to-r from-[#42a7c3] to-[#38d4ff] text-white font-semibold px-3 py-1.5 rounded-md hover:opacity-80 transition-all">
+              <Button className="text-sm text-center w-28 bg-gradient-to-r from-[#42a7c3] to-[#38d4ff] text-white font-semibold px-3 py-1.5 z-[999] rounded-md hover:opacity-80 transition-all">
                 Make Trip
               </Button>
             </a>
