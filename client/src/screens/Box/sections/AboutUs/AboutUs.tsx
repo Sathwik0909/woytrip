@@ -107,7 +107,32 @@ export const AboutUs = (): JSX.Element => {
             </div>
 
             {/* Stats Section */}
-            
+            <div className="w-full flex flex-col md:flex-row rounded-[0px_0px_20px_100px] overflow-hidden">
+              {stats.map((stat, index) => (
+                <React.Fragment key={index}>
+                  <div
+                    className={`flex-1 ${stat.bgColor} py-8 md:py-10 flex flex-col items-center justify-center`}
+                  >
+                    <div
+                      className={`${stat.textColor} text-3xl md:text-5xl font-normal font-digital`}
+                    >
+                      {stat.value}
+                    </div>
+                    <div
+                      className={`${stat.textColor} text-xl md:text-2xl font-semibold mt-2`}
+                    >
+                      {stat.label}
+                    </div>
+                  </div>
+                  {index < stats.length - 1 && (
+                    <Separator
+                      orientation="horizontal md:vertical"
+                      className="bg-neutral-100 h-px md:h-auto md:w-px"
+                    />
+                  )}
+                </React.Fragment>
+              ))}
+            </div>
           </div>
         </CardContent>
       </Card>
