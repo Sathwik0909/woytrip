@@ -73,7 +73,7 @@ export const Navbar = (): JSX.Element => {
               <a
                 key={index}
                 href={item.href}
-                className="text-sm w-28  text-center bg-gradient-to-r from-[#42a7c3] to-[#38d4ff] text-white font-semibold px-3 py-1.5 rounded-md z-[9999] hover:opacity-80 transition-all"
+                className="text-sm w-28  text-center bg-gradient-to-r from-[#42a7c3] to-[#38d4ff] text-white font-semibold px-3 py-1.5 rounded-md hover:opacity-80 transition-all"
               >
                 {item.label}
               </a>
