@@ -136,7 +136,7 @@ export const Footer = (): JSX.Element => {
 
       {/* Bottom spacing or divider */}
       <div className="mt-12 text-center text-sm text-gray-400">
-        © {new Date().getFullYear()} WayTrav. All rights reserved.
+        © {new Date().getFullYear()} WoyTrip. All rights reserved.
       </div>
     </footer>
   );
